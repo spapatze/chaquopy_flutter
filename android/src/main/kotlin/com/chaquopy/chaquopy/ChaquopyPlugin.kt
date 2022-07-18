@@ -29,20 +29,68 @@ class ChaquopyPlugin : FlutterPlugin, MethodCallHandler {
     fun _runPythonTextCode(code: String): Map<String, Any?> {
         val _returnOutput: MutableMap<String, Any?> = HashMap()
         val _python: Python = Python.getInstance()
-        val _console: PyObject = _python.getModule("script")
-        val _sys: PyObject = _python.getModule("sys")
-        val _io: PyObject = _python.getModule("io")
+//        val _console: PyObject = _python.getModule("script")
+//        val _sys: PyObject = _python.getModule("sys")
+//        val _io: PyObject = _python.getModule("io")
+//
+//        return try {
+//            val _textOutputStream: PyObject = _io.callAttr("StringIO")
+//            _sys["stdout"] = _textOutputStream
+//            _console.callAttrThrows("mainTextCode", code)
+//            _returnOutput["textOutputOrError"] = _textOutputStream.callAttr("getvalue").toString()
+//            _returnOutput
+//        } catch (e: PyException) {
+//            _returnOutput["textOutputOrError"] = e.message.toString()
+//            _returnOutput
+//        }
+        // Obtain the system's input stream (available from Chaquopy)
 
-        return try {
-            val _textOutputStream: PyObject = _io.callAttr("StringIO")
-            _sys["stdout"] = _textOutputStream
-            _console.callAttrThrows("mainTextCode", code)
-            _returnOutput["textOutputOrError"] = _textOutputStream.callAttr("getvalue").toString()
-            _returnOutput
+        // Obtain the system's input stream (available from Chaquopy)
+        val sys: PyObject = py.getModule("sys")
+        val io: PyObject = py.getModule("io")
+        // Obtain the right python module
+        // Obtain the right python module
+        val module: PyObject = py.getModule("infer_fas_tflite")
+
+        // Redirect the system's output stream to the Python interpreter
+
+        // Redirect the system's output stream to the Python interpreter
+        val textOutputStream: PyObject = io.callAttr("StringIO")
+        sys.put("stdout", textOutputStream)
+
+        // Create a string variable that will contain the standard output of the Python interpreter
+
+        // Create a string variable that will contain the standard output of the Python interpreter
+        var interpreterOutput = ""
+
+        // Execute the Python code
+
+        // Execute the Python code
+        interpreterOutput = try {
+            //String csvData = DBHelper.getInstance(this).getAllEntriesAsCsv();
+            module.callAttr(
+                "preprocess_and_infer",
+                "sample_input_2.json",
+                "input_scaler.z",
+                "model.tflite",
+                "input_columns.csv",
+                "params.json"
+            )
+
+            //module.callAttrThrows("main", "hrv.csv");
+            textOutputStream.callAttr("getvalue").toString()
         } catch (e: PyException) {
-            _returnOutput["textOutputOrError"] = e.message.toString()
-            _returnOutput
+            // If there's an error, you can obtain its output as well
+            // e.g. if you mispell the code
+            // Missing parentheses in call to 'print'
+            // Did you mean print("text")?
+            // <string>, line 1
+            e.getMessage().toString()
         }
+
+        // Outputs the results:
+
+        return interpreterOutput
     }
 
     override fun onMethodCall(@NonNull call: MethodCall, @NonNull result: Result) {
