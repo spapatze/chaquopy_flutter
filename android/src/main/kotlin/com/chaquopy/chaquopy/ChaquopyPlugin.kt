@@ -49,7 +49,8 @@ class ChaquopyPlugin : FlutterPlugin, MethodCallHandler {
         if (call.method == "runPythonScript") {
             try {
                 val code: String? = call.arguments()
-                val _result: Map<String?, Any?> = _runPythonTextCode(code)
+                val _code: String = code.nullable?.toString().orEmpty()
+                val _result: Map<String, Any?> = _runPythonTextCode(_code)
                 result.success(_result)
             } catch (e: Exception) {
                 val _result: MutableMap<String, Any?> = HashMap()
