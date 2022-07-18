@@ -49,7 +49,7 @@ class ChaquopyPlugin : FlutterPlugin, MethodCallHandler {
         if (call.method == "runPythonScript") {
             try {
                 val code: String? = call.arguments()
-                val _code: String = code.nullable?.toString().orEmpty()
+                val _code: String = code?.toString().orEmpty()
                 val _result: Map<String, Any?> = _runPythonTextCode(_code)
                 result.success(_result)
             } catch (e: Exception) {
