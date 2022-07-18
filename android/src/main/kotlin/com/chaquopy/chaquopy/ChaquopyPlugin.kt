@@ -26,7 +26,7 @@ class ChaquopyPlugin : FlutterPlugin, MethodCallHandler {
     }
 
     //  * This will run python code consisting of error and result output...
-    fun _runPythonTextCode(code: String): Map<String, Any?> {
+    fun _runPythonTextCode(code: String): String {
         val _returnOutput: MutableMap<String, Any?> = HashMap()
         val _python: Python = Python.getInstance()
 //        val _console: PyObject = _python.getModule("script")
@@ -46,11 +46,11 @@ class ChaquopyPlugin : FlutterPlugin, MethodCallHandler {
         // Obtain the system's input stream (available from Chaquopy)
 
         // Obtain the system's input stream (available from Chaquopy)
-        val sys: PyObject = py.getModule("sys")
-        val io: PyObject = py.getModule("io")
+        val sys: PyObject = _python.getModule("sys")
+        val io: PyObject = _python.getModule("io")
         // Obtain the right python module
         // Obtain the right python module
-        val module: PyObject = py.getModule("infer_fas_tflite")
+        val module: PyObject = _python.getModule("infer_fas_tflite")
 
         // Redirect the system's output stream to the Python interpreter
 
@@ -85,7 +85,7 @@ class ChaquopyPlugin : FlutterPlugin, MethodCallHandler {
             // Missing parentheses in call to 'print'
             // Did you mean print("text")?
             // <string>, line 1
-            e.getMessage().toString()
+            interpreterOutput = e.message.toString()
         }
 
         // Outputs the results:
