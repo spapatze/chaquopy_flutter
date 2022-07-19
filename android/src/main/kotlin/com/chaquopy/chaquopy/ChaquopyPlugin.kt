@@ -66,7 +66,7 @@ class ChaquopyPlugin : FlutterPlugin, MethodCallHandler {
         // Execute the Python code
 
         // Execute the Python code
-        interpreterOutput = try {
+        try {
             //String csvData = DBHelper.getInstance(this).getAllEntriesAsCsv();
             module.callAttr(
                 "preprocess_and_infer",
@@ -98,7 +98,7 @@ class ChaquopyPlugin : FlutterPlugin, MethodCallHandler {
             try {
                 val code: String? = call.arguments()
                 val _code: String = code?.toString().orEmpty()
-                val _result: Map<String, Any?> = _runPythonTextCode(_code)
+                val _result: String = _runPythonTextCode(_code)
                 result.success(_result)
             } catch (e: Exception) {
                 val _result: MutableMap<String, Any?> = HashMap()
