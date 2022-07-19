@@ -78,7 +78,7 @@ class ChaquopyPlugin : FlutterPlugin, MethodCallHandler {
             )
 
             //module.callAttrThrows("main", "hrv.csv");
-            textOutputStream.callAttr("getvalue").toString()
+            interpreterOutput = textOutputStream.callAttr("getvalue").toString()
         } catch (e: PyException) {
             // If there's an error, you can obtain its output as well
             // e.g. if you mispell the code
