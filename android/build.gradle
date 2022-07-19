@@ -28,7 +28,7 @@ apply plugin: 'kotlin-android'
 apply plugin: 'com.chaquo.python'
 
 android {
-    compileSdkVersion 30
+    compileSdkVersion 33
 
     sourceSets {
         main.java.srcDirs += 'src/main/kotlin'
